@@ -1,0 +1,1 @@
+Un proyecto que busca modernizar la interfaz del buscador de centros educativos de la Xunta de Galicia.
