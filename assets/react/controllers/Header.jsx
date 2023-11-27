@@ -1,24 +1,52 @@
 import React from 'react';
+import { useState } from 'react';
 import logoPath from '../../images/marcas/marca-positivo.png';
+import PrimaryButton from './PrimaryButton';
+import SecondaryButton from './SecondatyButton';
+import LinkBox from './LinkBox';
+import OutsideMenu from './OutsideMenu';
+import AnimatedLines from './AnimatedLines';
 
 export default function MyHeader() {
+  const [isHiddenMenuDisplayed, setMenuDisplay] = useState(false);
+  let currentURL = window.location.href;
+
+  window.addEventListener("resize", () => {
+    let windowWidth = window.innerWidth;
+    let menu = document.getElementById("hidden-menu");
+    
+    if (menu.style.display != "none" && windowWidth >= 768) {
+      setMenuDisplay(false);
+    }
+    
+  })
+  
+  function changeHiddenMenu(event) {
+    setMenuDisplay(!isHiddenMenuDisplayed);
+  }
+
     return (
-        <header className="bg-xuntaGris">
-            <nav className="flex w-full items-center justify-between p-6">
-                <div className="flex lg:flex-1">
-                    <a href="https://www.edu.xunta.gal/" class="-m-1.5 p-1.5">
-                        <img src={logoPath} className="h-8 w-28" alt="Logo Xunta de Galicia" />
-                    </a>
-                </div>
-                <div className="flex flex-1 space-x-5">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Inicio</a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Registro</a>
-                </div>
-                <div className="flex space-x-5 items-center h-full">
-                    <p>Hola usuario: user</p>
-                    <button className="bg-xuntaNaranja hover:bg-xuntaAzulClaro text-white py-2 px-4 rounded-full">Cerrar sesión</button>
-                </div>
-            </nav>
+      <div className='bg-xuntaGris-50'>
+        <header className="flex justify-between items-center h-16 p-3" id="main_header">
+          <img src={logoPath} className="h-12" />
+          <div className="md:hidden">
+            <PrimaryButton color="xuntaAzul" handleOnClick={changeHiddenMenu}>
+              <AnimatedLines isActive={isHiddenMenuDisplayed}/>
+            </PrimaryButton>
+          </div>
+          <nav className="hidden md:flex justify-around items-center grow lg:text-xl xl:text-2xl">
+            <LinkBox link="http://127.0.0.1:8000/prueba" currentURL={currentURL}>Buscador</LinkBox>
+            <LinkBox link="#">Administración</LinkBox>
+            <LinkBox link="http://127.0.0.1:8000/login" currentURL={currentURL}>Iniciar sesión</LinkBox>
+          </nav>
         </header>
+        <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 lg:text-xl xl:text-2x">
+          <p>Hola usuario username</p>
+          <SecondaryButton color="xuntaRojo" handleOnClick={() => {
+            console.log("Cerrar sesión");
+          }}>Cerrar sesión</SecondaryButton>
+        </div>
+        <OutsideMenu isActive={isHiddenMenuDisplayed}></OutsideMenu>
+      </div>
     );
 }

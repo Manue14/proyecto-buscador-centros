@@ -10,8 +10,8 @@
         "core-js": "^3.23.0",
         "eslint": "^8.52.0",
         "eslint-plugin-react": "^7.33.2",
-        "react": "^18.0",
-        "react-dom": "^18.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "regenerator-runtime": "^0.13.9",
         "tailwindcss": "^3.3.5",
         "webpack": "^5.74.0",
@@ -27,5 +27,9 @@
         "build": "encore production --progress",
         "css-build": "tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch",
         "launch": "encore dev --watch & tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch"
+    },
+    "dependencies": {
+        "leaflet": "^1.9.4",
+        "react-leaflet": "^4.2.1"
     }
 }
