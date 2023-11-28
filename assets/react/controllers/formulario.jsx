@@ -12,8 +12,8 @@ export default function MyForm() {
     }
 
     return (
-        <form className="lg:text-xl xl:text-2xl">
-            <fieldset className="w-3/5 m-auto p-4 bg-xuntaGris-50 rounded-md">
+        <form className="lg:text-xl xl:text-2xl w-full">
+            <fieldset className="w-4/5 m-auto p-4 bg-xuntaGris-50 rounded-md">
             <legend>Filtros para a busca</legend>
             <p><i>Indique polo menos un filtro e prema o botón Buscar</i></p>
             <fieldset className="p-4 bg-xuntaGris-100 rounded-md">

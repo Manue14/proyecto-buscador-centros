@@ -14,12 +14,12 @@ L.Icon.Default.mergeOptions({
 export default function Map() {
     return(
         <MapContainer
-            className="full-height-map"
-            center={[38, 139.69222]}
-            zoom={6}
-            minZoom={3}
-            maxZoom={19}
-            maxBounds={[[-85.06, -180], [85.06, 180]]}
+            className="h-full w-[95%] m-auto z-0"
+            center={[42.42308087172559, -6.684811365689726]}
+            zoom={9}
+            minZoom={7}
+            maxZoom={18}
+            maxBounds={[[41.76051583375554, -9.776013316202771], [43.95077106545359, -6.5240602225485205]]}
             scrollWheelZoom={true}>
             <TileLayer
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

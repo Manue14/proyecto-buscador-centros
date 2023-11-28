@@ -28,7 +28,9 @@ export default function MyHeader() {
     return (
       <div className='bg-xuntaGris-50'>
         <header className="flex justify-between items-center h-16 p-3" id="main_header">
-          <img src={logoPath} className="h-12" />
+          <a href="https://www.edu.xunta.gal/">
+            <img src={logoPath} className="h-12" />
+          </a>
           <div className="md:hidden">
             <PrimaryButton color="xuntaAzul" handleOnClick={changeHiddenMenu}>
               <AnimatedLines isActive={isHiddenMenuDisplayed}/>

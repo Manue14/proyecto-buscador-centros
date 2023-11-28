@@ -1,12 +1,13 @@
 import React from 'react';
 
 export default function MyModal() {
-    function hideModal() {
+    function hideModal(e) {
+        e.preventDefault();
         let modal = document.getElementById("myModal");
         modal.style.display = "none";
     }
     return(
-        <div id="myModal" className="hidden fixed top-0 left-0 bg-black bg-opacity-40 h-screen w-screen">
+        <div id="myModal" className="hidden fixed top-0 left-0 bg-black bg-opacity-40 h-screen w-screen z-10">
             <div className="bg-white h-fit w-11/12 md:w-4/5 rounded-xl text-sm  md:text-lg lg:text-xl xl:text-2xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-r border-l border-b border-x-stone-300 pl-">
                 <div className="relative bg-xuntaAzul-50 top-0 rounded-t-xl p-2">
                     <h1 className="font-bold text-xl md:text-2xl lg:text-3xl">Titularidade e concerto</h1>
