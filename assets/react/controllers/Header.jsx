@@ -7,10 +7,9 @@ import LinkBox from './LinkBox';
 import OutsideMenu from './OutsideMenu';
 import AnimatedLines from './AnimatedLines';
 
-export default function MyHeader() {
+export default function MyHeader({ buscador_link, administracion_link, login_link }) {
   const [isHiddenMenuDisplayed, setMenuDisplay] = useState(false);
   let currentURL = window.location.href;
-
   window.addEventListener("resize", () => {
     let windowWidth = window.innerWidth;
     let menu = document.getElementById("hidden-menu");
@@ -37,9 +36,9 @@ export default function MyHeader() {
             </PrimaryButton>
           </div>
           <nav className="hidden md:flex justify-around items-center grow lg:text-xl xl:text-2xl">
-            <LinkBox link="http://127.0.0.1:8000/prueba" currentURL={currentURL}>Buscador</LinkBox>
-            <LinkBox link="#">Administración</LinkBox>
-            <LinkBox link="http://127.0.0.1:8000/login" currentURL={currentURL}>Iniciar sesión</LinkBox>
+            <LinkBox link={buscador_link} currentURL={currentURL}>Buscador</LinkBox>
+            <LinkBox link={administracion_link}>Administración</LinkBox>
+            <LinkBox link={login_link} currentURL={currentURL}>Iniciar sesión</LinkBox>
           </nav>
         </header>
         <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 lg:text-xl xl:text-2x">
@@ -48,7 +47,7 @@ export default function MyHeader() {
             console.log("Cerrar sesión");
           }}>Cerrar sesión</SecondaryButton>
         </div>
-        <OutsideMenu isActive={isHiddenMenuDisplayed}></OutsideMenu>
+        <OutsideMenu isActive={isHiddenMenuDisplayed} buscador_link={buscador_link} administracion_link={administracion_link} login_link={login_link}></OutsideMenu>
       </div>
     );
 }

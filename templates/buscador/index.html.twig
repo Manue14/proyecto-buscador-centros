@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PruebaController!{% endblock %}
+
+{% block body %}
+    {% if message|default(null) %}
+        <div {{ react_component('FormApp', {'prop_object': {
+            'action': path('app_buscador_list'),
+            'buscador_link': path('app_buscador'),
+            'administracion_link': '#',
+            'login_link': path('app_login'),
+            'message': message,
+            'type': type
+        }}) }}>
+            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+        </div>
+    {% else %}
+        <div {{ react_component('FormApp', {'prop_object': {
+            'action': path('app_buscador_list'),
+            'buscador_link': path('app_buscador'),
+            'administracion_link': '#',
+            'login_link': path('app_login')
+        }}) }}>
+            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+        </div>
+    {% endif %}
+    {# {% if centros|default(null) %}
+        {% for centro in centros %}
+            <div>{{centro}}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if centros|default(null) %}
+        <div>{{centros}}</div>
+    {% endif %} #}
+
+    <div {{ react_component('Modal') }}></div>
+{% endblock %}

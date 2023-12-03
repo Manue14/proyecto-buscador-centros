@@ -3,7 +3,12 @@
 {% block title %}Hello LoginController!{% endblock %}
 
 {% block body %}
-<div {{ react_component('LoginApp') }}>
+<div {{ react_component('LoginApp', {'prop_object': {
+        'action': path('app_buscador'),
+        'buscador_link': path('app_buscador'),
+        'administracion_link': '#',
+        'login_link': path('app_login')
+    }}) }}>
         Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
 </div>
 {% endblock %}
