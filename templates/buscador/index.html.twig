@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello PruebaController!{% endblock %}
-
-{% block body %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        let array = [[], [], [], []];
+        let contador = 0;
+        {% for groupedConcellos in concellos %}
+            {% for concello in groupedConcellos %}
+                array[contador].push("{{concello}}");
+            {% endfor %}
+            contador++;
+        {% endfor %}
+        prop_object.concellos = array;
+    </script>
     {% if message|default(null) %}
-        <div {{ react_component('FormApp', {'prop_object': {
-            'action': path('app_buscador_list'),
-            'buscador_link': path('app_buscador'),
-            'administracion_link': '#',
-            'login_link': path('app_login'),
-            'message': message,
-            'type': type
-        }}) }}>
-            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
-        </div>
-    {% else %}
-        <div {{ react_component('FormApp', {'prop_object': {
-            'action': path('app_buscador_list'),
-            'buscador_link': path('app_buscador'),
-            'administracion_link': '#',
-            'login_link': path('app_login')
-        }}) }}>
-            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
-        </div>
+        <script>
+            prop_object.message = "{{message}}";
+            prop_object.type = "{{type}}";
+        </script>
     {% endif %}
+{% endblock %}
+{% block body %}
+    <div {{ react_component('FormApp') }}>
+            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+    </div>
     {# {% if centros|default(null) %}
         {% for centro in centros %}
             <div>{{centro}}</div>

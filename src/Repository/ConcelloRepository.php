@@ -45,4 +45,14 @@ class ConcelloRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByProvincia($provincia_id): array
+        {
+            return $this->createQueryBuilder('c')
+                ->andWhere('c.provincia_id = :val')
+                ->setParameter('val', $provincia_id)
+                ->orderBy('c.nombre', 'ASC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 }

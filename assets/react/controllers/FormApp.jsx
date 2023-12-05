@@ -6,7 +6,7 @@ import Map from "./Map";
 import MyTable from "./TableResults";
 import MessageModal from "./MessageModal";
 
-export default function FormApp({ prop_object }) {
+export default function FormApp() {
     return (
         <>
             <MyHeader buscador_link={prop_object.buscador_link} administracion_link={prop_object.administracion_link} login_link={prop_object.login_link}/>
@@ -15,7 +15,7 @@ export default function FormApp({ prop_object }) {
             </div>
             <div className="m-auto h-fit mt-10 lg:flex">
                 <div className="lg:w-1/2">
-                    <MyForm action={prop_object.action}/>
+                    <MyForm action={prop_object.action} concellos={prop_object.concellos}/>
                 </div>
                 <div className="h-[60vh] w-full mt-8 lg:m-auto lg:h-[90vh] lg:w-1/2">
                     <Map />
