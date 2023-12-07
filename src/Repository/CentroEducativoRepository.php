@@ -45,4 +45,54 @@ class CentroEducativoRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function filterBy($nombre, $tipo_de_centro, $provincia_id, $concello_id, $titularidad_nombre, $titularidad_dependencia): ?array {
+        $query = $this->createQueryBuilder('c');
+        if (!empty($nombre)) {
+            $query->andWhere('c.nombre LIKE :name')
+                ->setParameter('name', '%' . $nombre . '%');
+        }
+
+        if (!empty($tipo_de_centro)) {
+            $query->andWhere('c.tipo_de_centro = :tipo')
+                ->setParameter('tipo', $tipo_de_centro);
+        }
+
+        if (!empty($provincia_id)) {
+            if (empty($concello_id)) {
+                $query->leftJoin('c.concello', 'concello')
+                    ->andWhere('concello.provincia_id = :provinciaId')
+                    ->setParameter('provinciaId', $provincia_id);
+            } else {
+                $query->andWhere('c.concello_id = :concelloId')
+                    ->setParameter('concelloId', $concello_id);
+            }
+        }
+
+        if (!empty($titularidad_nombre)) {
+            if (!isset($titularidad_dependencia)) {
+                if ($titularidad_nombre === "Pública") {
+                    $query->andWhere('c.titularidad_id = 1 OR c.titularidad_id = 2');
+                } else {
+                    $query->andWhere('c.titularidad_id = 3 OR c.titularidad_id = 4');
+                }
+            } else {
+                if ($titularidad_dependencia === "true") {
+                    if ($titularidad_nombre === "Pública") {
+                        $query->andWhere('c.titularidad_id = 1');
+                    } else {
+                        $query->andWhere('c.titularidad_id = 3');
+                    }
+                } else {
+                    if ($titularidad_nombre === "Pública") {
+                        $query->andWhere('c.titularidad_id = 2');
+                    } else {
+                        $query->andWhere('c.titularidad_id = 4');
+                    }
+                }
+            }
+            
+        }
+       return $query->getQuery()->getResult();
+    }
 }

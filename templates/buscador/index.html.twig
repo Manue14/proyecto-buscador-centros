@@ -4,15 +4,41 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        let array = [[], [], [], []];
+        let arrayConcellos = [[], [], [], []];
         let contador = 0;
         {% for groupedConcellos in concellos %}
             {% for concello in groupedConcellos %}
-                array[contador].push("{{concello}}");
+                arrayConcellos[contador].push("{{concello}}");
             {% endfor %}
             contador++;
         {% endfor %}
-        prop_object.concellos = array;
+        prop_object.concellos = arrayConcellos;
+        
+        let arrayTiposCentro = [];
+        contador = 0;
+        {% for tipo in tipos_centro %}
+            arrayTiposCentro[contador] = ("{{tipo}}");
+            contador++;
+        {% endfor %}
+        prop_object.tiposCentro = arrayTiposCentro;
+
+        let arrayCentros = [];
+        contador = 0;
+        {% if centros|default(null) %}
+            {% for centro in centros %}
+                arrayCentros[contador] = {
+                    id: "{{centro.id}}",
+                    nombre: "{{centro.nombre}}",
+                    direccion: "{{centro.direccion}}",
+                    concello: "{{centro.concelloId}}",
+                    provincia: "aaaaaa",
+                    cod_postal: "{{centro.codPostal}}",
+                    tlf: "{{centro.telefono}}"
+                };
+                contador++;
+            {% endfor %}
+            prop_object.centros = arrayCentros;
+        {% endif %}
     </script>
     {% if message|default(null) %}
         <script>
@@ -25,15 +51,11 @@
     <div {{ react_component('FormApp') }}>
             Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
     </div>
-    {# {% if centros|default(null) %}
-        {% for centro in centros %}
-            <div>{{centro}}</div>
-        {% endfor %}
-    {% endif %}
+    <div {{ react_component('Modal') }}></div>
 
     {% if centros|default(null) %}
-        <div>{{centros}}</div>
-    {% endif %} #}
-
-    <div {{ react_component('Modal') }}></div>
+        {% for centro in centros %}
+            <div>{{centro.nombre}}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

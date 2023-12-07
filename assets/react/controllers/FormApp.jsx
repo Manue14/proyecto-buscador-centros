@@ -15,14 +15,14 @@ export default function FormApp() {
             </div>
             <div className="m-auto h-fit mt-10 lg:flex">
                 <div className="lg:w-1/2">
-                    <MyForm action={prop_object.action} concellos={prop_object.concellos}/>
+                    <MyForm action={prop_object.action} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
                 </div>
                 <div className="h-[60vh] w-full mt-8 lg:m-auto lg:h-[90vh] lg:w-1/2">
                     <Map />
                 </div>
             </div>
             <div className="mt-10">
-                <MyTable />
+                <MyTable centros={prop_object.centros}/>
             </div>
             <MyFooter />
         </>  

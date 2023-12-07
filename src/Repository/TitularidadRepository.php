@@ -45,4 +45,24 @@ class TitularidadRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByNombre($nombre) {
+        return $this->createQueryBuilder('t')
+            ->addSelect('t.id')
+            ->andWhere('t.nombre = :val')
+            ->setParameter('val', $nombre)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByNombreDependencia($nombre, $dependencia) {
+        return $this->createQueryBuilder('t')
+            ->addSelect('t.id')
+            ->andWhere('t.nombre = :val1')
+            ->andWhere('t.dependiente_concertado = :val2')
+            ->setParameter('val1', $nombre)
+            ->setParameter('val2', $dependencia)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -32,4 +32,9 @@ class TipoCentro
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return ($this->getId() . "-" . $this->getNombre());
+    }
 }

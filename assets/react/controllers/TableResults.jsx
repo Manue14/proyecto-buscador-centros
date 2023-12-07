@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from 'react';
 
-export default function MyTable() {
+export default function MyTable({ centros }) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     window.addEventListener("resize", () => {
         if (window.innerWidth < 768) {
@@ -10,6 +10,24 @@ export default function MyTable() {
             setWindowWidth(window.innerWidth);
         }
     })
+
+    let centrosTr = <></>;
+    if (Array.isArray(centros)) {
+        centrosTr = centros.map((centro) => {
+            return(
+                <tr key={centro.id} className="bg-slate-200 [&:nth-child(2n)]:bg-white hover:bg-slate-300 [&:nth-child(2n)]:hover:bg-slate-300">
+                    <td className="p-6">{centro.id}</td>
+                    <td>{centro.nombre}</td>
+                    <td>{centro.direccion}</td>
+                    <td>{centro.concello}</td>
+                    <td>{centro.provincia}</td>
+                    <td>{centro.cod_postal}</td>
+                    <td>{centro.tlf}</td>
+                </tr>
+            );
+        })
+    }
+
     if (windowWidth < 768) {
         return (
             <table className="text-center w-full overflow-auto text-base">
@@ -121,34 +139,8 @@ export default function MyTable() {
                 <th>Teléfono</th>
             </tr>
             </thead>
-            <tbody className="">
-            <tr className="bg-slate-200 [&:nth-child(2n)]:bg-white hover:bg-slate-300 [&:nth-child(2n)]:hover:bg-slate-300">
-                <td className="p-6">15001033</td>
-                <td>CFEA de Guísamo</td>
-                <td>Lugar de Bos 14</td>
-                <td>Bergondo</td>
-                <td>A Coruña</td>
-                <td>15640</td>
-                <td>881881055</td>
-            </tr>
-            <tr className="bg-slate-200 [&:nth-child(2n)]:bg-white hover:bg-slate-300 [&:nth-child(2n)]:hover:bg-slate-300">
-                <td className="p-6">15004204</td>
-                <td>IES Rosalía Mera</td>
-                <td>Rúa Archer M. Huntington 24</td>
-                <td>A Coruña</td>
-                <td>A Coruña</td>
-                <td>15011</td>
-                <td>981252600</td>
-            </tr>
-            <tr className="bg-slate-200 [&:nth-child(2n)]:bg-white hover:bg-slate-300 [&:nth-child(2n)]:hover:bg-slate-300">
-                <td className="p-6">15005300</td>
-                <td>IES Rafael Puga Ramón</td>
-                <td>Rúa Leopoldo Alas Clarín 4</td>
-                <td>A Coruña</td>
-                <td>A Coruña</td>
-                <td>15008</td>
-                <td>981080188</td>
-            </tr>
+            <tbody>
+                {centrosTr}
             </tbody>
         </table>
     );

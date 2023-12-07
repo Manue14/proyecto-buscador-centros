@@ -40,6 +40,10 @@ class CentroEducativo
     #[ORM\Column(length: 20)]
     private ?string $tipo_de_centro = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Concello $concello = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +153,18 @@ class CentroEducativo
     public function setTipoDeCentro(string $tipo_de_centro): static
     {
         $this->tipo_de_centro = $tipo_de_centro;
+
+        return $this;
+    }
+
+    public function getConcello(): ?Concello
+    {
+        return $this->concello;
+    }
+
+    public function setConcello(?Concello $concello): static
+    {
+        $this->concello = $concello;
 
         return $this;
     }
