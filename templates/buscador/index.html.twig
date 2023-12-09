@@ -23,21 +23,54 @@
         prop_object.tiposCentro = arrayTiposCentro;
 
         let arrayCentros = [];
+        let arrayCentrosCoordenadas = [];
+        let nombreProvincia = "";
+        let nombreConcello = "";
         contador = 0;
         {% if centros|default(null) %}
             {% for centro in centros %}
+                arrayConcellos.forEach((concellos) => {
+                    if (concellos.find((concello) => concello.split('-')[0] === "{{centro.concelloId}}") !== undefined ) {
+                        arrayConcellos[arrayConcellos.indexOf(concellos)].forEach((concello) => {
+                            if (concello.split('-')[0] === "{{centro.concelloId}}") {
+                                nombreConcello = concello.split('-')[1];
+                            }
+                        })
+                        switch(arrayConcellos.indexOf(concellos)) {
+                            case 0:
+                                nombreProvincia = "A Coruña";
+                            break;
+                            case 1:
+                                nombreProvincia = "Lugo";
+                            break;
+                            case 2:
+                                nombreProvincia = "Ourense";
+                            break;
+                            case 3:
+                                nombreProvincia = "Pontevedra";
+                            break;
+                        }
+                    }
+                })
                 arrayCentros[contador] = {
                     id: "{{centro.id}}",
                     nombre: "{{centro.nombre}}",
                     direccion: "{{centro.direccion}}",
-                    concello: "{{centro.concelloId}}",
-                    provincia: "aaaaaa",
+                    concello: nombreConcello,
+                    provincia: nombreProvincia,
                     cod_postal: "{{centro.codPostal}}",
                     tlf: "{{centro.telefono}}"
                 };
+                arrayCentrosCoordenadas[contador] = {
+                    id: "{{centro.id}}",
+                    nombre: "{{centro.nombre}}",
+                    coordenadaX: "{{centro.coordenadaX}}",
+                    coordenadaY: "{{centro.coordenadaY}}"
+                }
                 contador++;
             {% endfor %}
             prop_object.centros = arrayCentros;
+            prop_object.centrosCoordenadas = arrayCentrosCoordenadas;
         {% endif %}
     </script>
     {% if message|default(null) %}
@@ -52,10 +85,4 @@
             Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
     </div>
     <div {{ react_component('Modal') }}></div>
-
-    {% if centros|default(null) %}
-        {% for centro in centros %}
-            <div>{{centro.nombre}}</div>
-        {% endfor %}
-    {% endif %}
 {% endblock %}

@@ -84,12 +84,18 @@ class BuscadorController extends AbstractController
 
         $centros = $centroService->queryBuilder($nombre, $tipo_de_centro, $provincia_id, $concello_id, $titularidad_nombre, $titularidad_dependencia);
 
+        $message = "Non se atopou ningún centro";
+
+        if (!empty($centros)) {
+            $message = "Atopáronse " . sizeof($centros) . " centro(s)";
+        }
+
         return $this->render('buscador/index.html.twig', [
             'controller_name' => 'BuscadorController',
             'concellos' => $concellos,
             'tipos_centro' => $tipos_de_centro,
             'type' => 'normal',
-            'message' => 'Éxito',
+            'message' => $message,
             'centros' => $centros
         ]);
     }

@@ -1,17 +1,31 @@
 import React from 'react';
-import "leaflet/dist/leaflet.css"
-import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet'
+import "leaflet/dist/leaflet.css";
+import {MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
 
-/*import L from 'leaflet'*/
-/*delete L.Icon.Default.prototype._getIconUrl;
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-});*/
+});
 
-export default function Map() {
+export default function Map({ arrayCentrosCoordenadas }) {
+    let markers = <></>
+    if (Array.isArray(arrayCentrosCoordenadas)) {
+        markers = arrayCentrosCoordenadas.map((centro) => {
+            let position = [centro.coordenadaX, centro.coordenadaY];
+            return (
+                <Marker key={centro.id} position={position}>
+                    <Popup>
+                        {centro.nombre}
+                    </Popup>
+                </Marker>
+            )
+        })
+    }
+
     return(
         <MapContainer
             className="h-full w-[95%] m-auto z-0"
@@ -25,7 +39,7 @@ export default function Map() {
                 attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {/* TODO: Add markers */}
+            {markers}
         </MapContainer>
     )
 }

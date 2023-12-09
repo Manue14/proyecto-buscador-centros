@@ -18,7 +18,7 @@ export default function FormApp() {
                     <MyForm action={prop_object.action} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
                 </div>
                 <div className="h-[60vh] w-full mt-8 lg:m-auto lg:h-[90vh] lg:w-1/2">
-                    <Map />
+                    <Map arrayCentrosCoordenadas={prop_object.centrosCoordenadas}/>
                 </div>
             </div>
             <div className="mt-10">
