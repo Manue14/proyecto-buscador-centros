@@ -15,7 +15,7 @@ export default function FormApp() {
             </div>
             <div className="m-auto h-fit mt-10 lg:flex">
                 <div className="lg:w-1/2">
-                    <MyForm action={prop_object.action} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
+                    <MyForm method={prop_object.method} action={prop_object.action} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
                 </div>
                 <div className="h-[60vh] w-full mt-8 lg:m-auto lg:h-[90vh] lg:w-1/2">
                     <Map arrayCentrosCoordenadas={prop_object.centrosCoordenadas}/>

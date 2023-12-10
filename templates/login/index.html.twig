@@ -1,14 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        prop_object.method = "POST";
+        prop_object.action = "{{path('app_login_user')}}";
+    </script>
+    {% if message|default(null) %}
+        <script>
+            prop_object.message = "{{message}}";
+            prop_object.type = "{{type}}";
+        </script>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-<div {{ react_component('LoginApp', {'prop_object': {
-        'action': path('app_buscador'),
-        'buscador_link': path('app_buscador'),
-        'administracion_link': '#',
-        'login_link': path('app_login')
-    }}) }}>
+<div {{ react_component('LoginApp') }}>
         Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
 </div>
 {% endblock %}

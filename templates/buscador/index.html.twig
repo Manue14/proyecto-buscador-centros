@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PruebaController!{% endblock %}
+{% block title %}Buscador{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script>
+        prop_object.method = "GET";
+        prop_object.action = "{{path('app_buscador_list')}}";
         let arrayConcellos = [[], [], [], []];
         let contador = 0;
         {% for groupedConcellos in concellos %}

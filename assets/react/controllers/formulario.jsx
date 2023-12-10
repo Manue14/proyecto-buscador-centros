@@ -5,7 +5,7 @@ import SecondaryButton from './SecondatyButton';
 import Tooltip from './Tooltip';
 import MyModal from './Modal';
 
-export default function MyForm({ action, concellos, tipos_centro }) {
+export default function MyForm({ method, action, concellos, tipos_centro }) {
     const [selectedProvincia, setProvincia] = useState(null);
     const [selectedTitularidad, setTitularidad] = useState(null);
     let isProvinciaSelected = selectedProvincia !== null;
@@ -87,7 +87,7 @@ export default function MyForm({ action, concellos, tipos_centro }) {
     }
 
     return (
-        <form id="searchForm" className="lg:text-xl xl:text-2xl w-full" method="get" action={action}>
+        <form id="searchForm" className="lg:text-xl xl:text-2xl w-full" method={method} action={action}>
             <fieldset className="w-4/5 m-auto p-4 bg-xuntaGris-50 rounded-md">
                 <legend>Filtros para a busca</legend>
                 <p><i>Indique polo menos un filtro e prema o botón Buscar</i></p>

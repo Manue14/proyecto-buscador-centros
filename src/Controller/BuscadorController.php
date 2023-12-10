@@ -6,10 +6,6 @@ use App\Service\CentroService;
 use App\Service\ConcelloService;
 use App\Service\TitularidadService;
 use App\Service\TipoCentroService;
-use App\Entity\CentroEducativo;
-use App\Entity\Concello;
-use App\Entity\Titularidad;
-use App\Entity\TipoCentro;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +26,7 @@ class BuscadorController extends AbstractController
     }
 
     #[Route('/buscador/list', name: 'app_buscador_list')]
-    public function list(ConcelloService $concelloService, TitularidadService $titularidadService, TipoCentroService $tipoCentroService, CentroService $centroService): Response {
+    public function list(ConcelloService $concelloService, TipoCentroService $tipoCentroService, CentroService $centroService): Response {
         $concellos = $this->getGroupedConcellos($concelloService);
         $tipos_de_centro = $this->getTiposCentro($tipoCentroService);
         $valido = false;
