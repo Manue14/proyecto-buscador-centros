@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Service\UsuarioService;
@@ -19,7 +20,7 @@ class LoginController extends AbstractController
     }
 
     #[Route('/loginUser', name: 'app_login_user')]
-    public function login(UserPasswordHasherInterface $passwordHasher, UsuarioService $usuarioService): Response
+    public function login(Request $request, UserPasswordHasherInterface $passwordHasher, UsuarioService $usuarioService): Response
     {
         $valido = true;
         $keys = array_keys($_POST);
@@ -59,10 +60,21 @@ class LoginController extends AbstractController
             ]);
         }
 
+        $session = $request->getSession();
+        $session->set("email", $email);
+
         return $this->render('login/index.html.twig', [
             'controller_name' => 'LoginController',
             'type' => 'normal',
             'message' => 'Éxito'
         ]);
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(Request $request): Response {
+        $session = $request->getSession();
+        $session->invalidate();
+
+        return $this->redirectToRoute("app_buscador");
     }
 }

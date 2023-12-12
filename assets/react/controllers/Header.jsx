@@ -6,9 +6,12 @@ import SecondaryButton from './SecondatyButton';
 import LinkBox from './LinkBox';
 import OutsideMenu from './OutsideMenu';
 import AnimatedLines from './AnimatedLines';
+import { SessionContext } from "./Context.js";
+import { useContext } from 'react';
 
 export default function MyHeader({ buscador_link, administracion_link, login_link }) {
   const [isHiddenMenuDisplayed, setMenuDisplay] = useState(false);
+  const session = useContext(SessionContext);
   let currentURL = window.location.href;
   window.addEventListener("resize", () => {
     let windowWidth = window.innerWidth;
@@ -41,12 +44,16 @@ export default function MyHeader({ buscador_link, administracion_link, login_lin
             <LinkBox link={login_link} currentURL={currentURL}>Iniciar sesión</LinkBox>
           </nav>
         </header>
-        <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 lg:text-xl xl:text-2x">
-          <p>Hola usuario username</p>
-          <SecondaryButton color="xuntaRojo" handleOnClick={() => {
-            console.log("Cerrar sesión");
-          }}>Cerrar sesión</SecondaryButton>
-        </div>
+        {session === undefined ?
+          <></>
+        :
+          <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 lg:text-xl xl:text-2x">
+            <p>Hola usuario {session}</p>
+            <form action='/logout'>
+              <SecondaryButton color="xuntaRojo">Cerrar sesión</SecondaryButton>
+            </form>
+          </div>
+        }
         <OutsideMenu isActive={isHiddenMenuDisplayed} buscador_link={buscador_link} administracion_link={administracion_link} login_link={login_link}></OutsideMenu>
       </div>
     );
