@@ -168,4 +168,11 @@ class CentroEducativo
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return ($this->getId() . "-" . $this->getConcelloId() . "-" . $this->getTitularidadId() . "-" . $this->getNombre()
+        . "-" . $this->getDireccion() . "-" . $this->getCodPostal() . "-" . $this->getTelefono()
+        . "-" . $this->getCoordenadaX() . "-" . $this->getCoordenadaY() . $this->getTipoDeCentro());
+    }
 }

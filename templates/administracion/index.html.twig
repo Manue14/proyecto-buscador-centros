@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administración{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        prop_object.method = "POST";
+        prop_object.action = "{{path('app_buscador_list')}}";
+        let arrayConcellos = [[], [], [], []];
+        let contador = 0;
+        {% for groupedConcellos in concellos %}
+            {% for concello in groupedConcellos %}
+                arrayConcellos[contador].push("{{concello}}");
+            {% endfor %}
+            contador++;
+        {% endfor %}
+        prop_object.concellos = arrayConcellos;
+        
+        let arrayTiposCentro = [];
+        contador = 0;
+        {% for tipo in tipos_centro %}
+            arrayTiposCentro[contador] = ("{{tipo}}");
+            contador++;
+        {% endfor %}
+        prop_object.tiposCentro = arrayTiposCentro;
+
+        let arrayCentros = [];
+        contador = 0;
+        {% if centros|default(null) %}
+            {% for centro in centros %}
+                arrayCentros[contador] = {
+                    id: "{{centro.id}}",
+                    nombre: "{{centro.nombre}}",
+                    direccion: "{{centro.direccion}}",
+                    concello: "{{centro.concelloId}}",
+                    titularidad: "{{centro.titularidadId}}",
+                    cod_postal: "{{centro.codPostal}}",
+                    tlf: "{{centro.telefono}}",
+                    coordenadaX: "{{centro.coordenadaX}}",
+                    coordenadaY: "{{centro.coordenadaY}}",
+                    tipo_de_centro: "{{centro.tipoDeCentro}}"
+                };
+                contador++;
+            {% endfor %}
+            prop_object.centros = arrayCentros;
+        {% endif %}
+    </script>
+    {% if message|default(null) %}
+        <script>
+            prop_object.message = "{{message}}";
+            prop_object.type = "{{type}}";
+        </script>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div {{ react_component('AdminFormApp') }}>
+            Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+    </div>
+    <div {{ react_component('Modal') }}></div>
+{% endblock %}

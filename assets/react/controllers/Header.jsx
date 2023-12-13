@@ -40,7 +40,7 @@ export default function MyHeader({ buscador_link, administracion_link, login_lin
           </div>
           <nav className="hidden md:flex justify-around items-center grow lg:text-xl xl:text-2xl">
             <LinkBox link={buscador_link} currentURL={currentURL}>Buscador</LinkBox>
-            <LinkBox link={administracion_link}>Administración</LinkBox>
+            <LinkBox link={administracion_link} currentURL={currentURL}>Administración</LinkBox>
             <LinkBox link={login_link} currentURL={currentURL}>Iniciar sesión</LinkBox>
           </nav>
         </header>

@@ -63,11 +63,7 @@ class LoginController extends AbstractController
         $session = $request->getSession();
         $session->set("email", $email);
 
-        return $this->render('login/index.html.twig', [
-            'controller_name' => 'LoginController',
-            'type' => 'normal',
-            'message' => 'Éxito'
-        ]);
+        return $this->redirectToRoute('app_administracion');
     }
 
     #[Route('/logout', name: 'app_logout')]

@@ -12,6 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BuscadorController extends AbstractController
 {
+    #[Route('/', name: 'index')]
+    public function redirectToindex(): Response
+    {
+        return $this->redirectToRoute('app_buscador');
+    }
 
     #[Route('/buscador', name: 'app_buscador')]
     public function index(ConcelloService $concelloService, TipoCentroService $tipoCentroService): Response
