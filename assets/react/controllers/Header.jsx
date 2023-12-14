@@ -47,7 +47,7 @@ export default function MyHeader({ buscador_link, administracion_link, login_lin
         {session === undefined ?
           <></>
         :
-          <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 lg:text-xl xl:text-2x">
+          <div className="flex items-center justify-center gap-x-3 w-fit m-auto pl-3 pt-4 text-sm md:text-base lg:text-xl xl:text-2x">
             <p>Hola usuario {session}</p>
             <form action='/logout'>
               <SecondaryButton color="xuntaRojo">Cerrar sesión</SecondaryButton>

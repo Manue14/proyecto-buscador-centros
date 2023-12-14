@@ -13,8 +13,8 @@ export default function AdminFormApp() {
             <div className="m-auto">
                 <MessageModal type={prop_object.type} message={prop_object.message}/>
             </div>
-            <div className="m-auto h-fit mt-10 lg:flex">
-                <div className="w-full">
+            <div className="m-auto h-fit mt-10">
+                <div className="lg:w-full">
                     <AdminForm method={prop_object.method} action={prop_object.action} centros={prop_object.centros} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
                 </div>
             </div>

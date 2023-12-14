@@ -9,8 +9,28 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
     const [selectedCentro, setCentro] = useState({tipo_de_centro: ""});
     const [selectedProvincia, setProvincia] = useState(null);
     const [selectedTitularidad, setTitularidad] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
     let isProvinciaSelected = selectedProvincia !== null;
-    let isTitularidadSelected = false;
+    let isTitularidadSelected = selectedTitularidad !== null;
+
+    let provinciaId = "";
+    if (selectedProvincia !== null) {
+        provinciaId = selectedProvincia + 1;
+    }
+    let concelloId = "";
+    let found = false;
+    for (let i = 0; i < concellos.length && !found; i++) {
+        for (let j = 0; j < concellos[i].length; j++) {
+            if (concellos[i][j].split('-')[0] === selectedCentro.concello) {
+                concelloId = concellos[i][j].split('-')[0];
+                provinciaId = i + 1;
+                found = true;
+                if (selectedProvincia !== i) {
+                    setProvincia(i);
+                }
+            }
+        }
+    }
 
     let titularidadName = "";
     let dependenciaValue = "";
@@ -72,10 +92,7 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
             return (
                 <div className="flex flex-col mb-5">
                     <label htmlFor="dependencia">Dependencia</label>
-                    <select className="rounded-md w-4/5 md:w-3/6" id="dependencia" name="dependencia" value={dependenciaValue} onChange={() => {
-                        console.log("S")
-                    }}>
-                        <option value="">--Todas--</option>
+                    <select className="rounded-md w-4/5 md:w-3/6" id="dependencia" name="dependencia" value={dependenciaValue} onChange={handleSelectDependencia}>
                         {dependenciaDropdown}
                     </select>
                 </div>
@@ -98,26 +115,70 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
             setCentro(centro);
         } else {
             setCentro({tipo_de_centro: ""});
+            setProvincia(null);
+            setTitularidad(null);
         }  
     }
 
     function handleSelectProvincia() {
         let provinciaSelect = document.getElementById("provincia");
+        let editedCentro = {...selectedCentro};
         if (provinciaSelect.value.length !== 0) {
+            editedCentro.concello = "";
             setProvincia(parseInt(provinciaSelect.value) - 1);
+            setCentro(editedCentro);
         } else {
             setProvincia(null);
-        }  
+        }
+    }
+
+    function handleSelectConcello() {
+        let concelloSelect = document.getElementById("concello");
+        let editedCentro = {...selectedCentro};
+        if (concelloSelect.value.length !== 0) {
+            editedCentro.concello = concelloSelect.value;
+        } else {
+            editedCentro.concello = "";
+        }
+        setCentro(editedCentro);
     }
 
     function handleSelectTitularidad() {
         let titularidadSelect = document.getElementById("titularidad");
+        let editedCentro = {...selectedCentro};
         if (titularidadSelect.value.length !== 0) {
             setTitularidad(titularidadSelect.value);
+            if (titularidadSelect.value === "Pública") {
+                editedCentro.titularidad = 1;
+            } else if (titularidadSelect.value === "Privada") {
+                editedCentro.titularidad = 3;
+            }
         } else {
             setTitularidad(null);
+            editedCentro.titularidad = "";
         }
-        
+        setCentro(editedCentro);
+    }
+
+    function handleSelectDependencia() {
+        let dependenciaSelect = document.getElementById("dependencia");
+        let titularidadSelect = document.getElementById("titularidad");
+        let editedCentro = {...selectedCentro};
+
+        if (dependenciaSelect.value === "true") {
+            if (titularidadSelect.value === "Pública") {
+                editedCentro.titularidad = 1;
+            } else if (titularidadSelect.value === "Privada") {
+                editedCentro.titularidad = 3;
+            }
+        } else {
+            if (titularidadSelect.value === "Pública") {
+                editedCentro.titularidad = 2;
+            } else if (titularidadSelect.value === "Privada") {
+                editedCentro.titularidad = 4;
+            }
+        }
+        setCentro(editedCentro);
     }
 
     function handleSelectTipoCentro() {
@@ -125,14 +186,33 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
         let editedCentro = {...selectedCentro};
         if (tipoSelect.value.length !== 0) {
             editedCentro.tipo_de_centro = tipoSelect.value;
+        } else {
+            editedCentro.tipo_de_centro = "";
         }
         setCentro(editedCentro);
+    }
+
+    function handleCheckbox() {
+        let checkbox = document.getElementById("editar");
+        if (checkbox.checked == true) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+        let searchForm = document.getElementById("searchForm");
+        searchForm.reset();
+        setCentro({tipo_de_centro: ""});
+        setProvincia(null);
+        setTitularidad(null);
     }
 
     function clearForm(e) {
         e.preventDefault();
         let searchForm = document.getElementById("searchForm");
         searchForm.reset();
+        setCentro({tipo_de_centro: ""});
+        setProvincia(null);
+        setTitularidad(null);
     }
 
     function showModal(e) {
@@ -148,27 +228,33 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                 <p><i>Indique polo menos un filtro e prema o botón Buscar</i></p>
                 <fieldset className="p-4 bg-xuntaGris-100 rounded-md">
                     <legend>Centro</legend>
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="nombre">Centro</label>
-                        <input className="rounded-md lg:w-3/4" id="nombre" name="nombre"></input>
-                    </div>
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="nombre">Centro</label>
-                        <select className="rounded-md lg:w-3/4" id="centroSelect" name="centroSelect" onChange={handleSelectCentro}>
-                            <option value="">------</option>
-                            {centrosDropdown}
-                        </select>
+                    <div className='lg:flex lg:justify-around lg:space-x-6 mb-5'>
+                        <div className="flex flex-col lg:w-1/2">
+                            <label htmlFor="nombre">Centro</label>
+                            <input className="rounded-md w-full" id="nombre" name="nombre" disabled={isEditing}></input>
+                        </div>
+                        <div className="flex items-center justify-start space-x-2 mt-2 mb-2 lg:mt-0 lg:flex-col lg:space-x-0">
+                            <label htmlFor="editar">Editar</label>
+                            <input className="rounded-md mt-1 lg:w-full lg:h-full" id="editar" name="editar" type="checkbox" checked={isEditing} onChange={handleCheckbox}></input>
+                        </div>
+                        <div className="flex flex-col lg:w-1/2">
+                            <label htmlFor="nombre">Centro</label>
+                            <select className="rounded-md w-full" id="centroSelect" name="centroSelect" disabled={!isEditing} onChange={handleSelectCentro}>
+                                <option value="">------</option>
+                                {centrosDropdown}
+                            </select>
+                        </div>
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="tipo_centro">Tipo de Centro</label>
-                        <select className="rounded-md md:w-3/5 lg:w-2/5" id="tipo_centro" name="tipo_centro" value={selectedCentro.tipo_de_centro} onChange={handleSelectTipoCentro}>
+                        <select className="rounded-md w-1/2 md:w-3/5 lg:w-2/5" id="tipo_centro" name="tipo_centro" value={selectedCentro.tipo_de_centro} onChange={handleSelectTipoCentro}>
                             <option value="">--Todas--</option>
                             {tiposCentroDropdown}
                         </select>
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="provincia">Provincias</label>
-                        <select className="rounded-md md:w-3/5 lg:w-2/5" id="provincia" name="provincia" onChange={handleSelectProvincia}>
+                        <select className="rounded-md w-8/12 md:w-3/5 lg:w-2/5" id="provincia" name="provincia" onChange={handleSelectProvincia} value={provinciaId}>
                             <option value="">--Todas--</option>
                             <option value="1">Coruña (A)</option>
                             <option value="2">Lugo</option>
@@ -178,14 +264,14 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="concello">Concello</label>
-                        <select className="rounded-md md:w-3/5" id="concello" name="concello" disabled={!isProvinciaSelected}>
+                        <select className="rounded-md w-8/12 md:w-3/5" id="concello" name="concello" disabled={!isProvinciaSelected} onChange={handleSelectConcello} value={concelloId}>
                             <option value="">--Todos--</option>
                             {concellosDropdown}
                         </select>
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="enderezo">Enderezo</label>
-                        <input className="rounded-md md:w-3/5" id="enderezo" name="enderezo" defaultValue={selectedCentro !== null ?
+                        <input className="rounded-md w-8/12 md:w-3/5" id="enderezo" name="enderezo" defaultValue={selectedCentro !== null ?
                                 selectedCentro.direccion
                             :
                                 ""}>
@@ -193,28 +279,31 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="postal">Código postal</label>
-                        <input className="rounded-md md:w-3/5" id="postal" name="postal" defaultValue={selectedCentro !== null ?
+                        <input className="rounded-md w-1/2 md:w-3/5" id="postal" name="postal" defaultValue={selectedCentro !== null ?
                                 selectedCentro.cod_postal
                             :
                                 ""}>
                         </input>
                     </div>
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="coordenadaX">Coordenada X</label>
-                        <input className="rounded-md md:w-3/5" id="coordenadaX" name="coordenadaX" defaultValue={selectedCentro !== null ?
-                                selectedCentro.coordenadaX
-                            :
-                                ""}>
-                        </input>
+                    <div className='md:flex md:justify-around md:space-x-1'>
+                        <div className="md:flex md:flex-col mb-5">
+                            <label htmlFor="coordenadaX">Coordenada X</label>
+                            <input className="rounded-md md:w-full" id="coordenadaX" name="coordenadaX" type="number" defaultValue={selectedCentro !== null ?
+                                    selectedCentro.coordenadaX
+                                :
+                                    ""}>
+                            </input>
+                        </div>
+                        <div className="md:flex md:flex-col mb-5">
+                            <label htmlFor="coordenadaX">Coordenada Y</label>
+                            <input className="rounded-md md:w-full" id="coordenadaY" name="coordenadaY" type="number" defaultValue={selectedCentro !== null ?
+                                    selectedCentro.coordenadaY
+                                :
+                                    ""}>
+                            </input>
+                        </div>
                     </div>
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="coordenadaX">Coordenada Y</label>
-                        <input className="rounded-md md:w-3/5" id="coordenadaY" name="coordenadaY" defaultValue={selectedCentro !== null ?
-                                selectedCentro.coordenadaY
-                            :
-                                ""}>
-                        </input>
-                    </div>
+                    
                     <fieldset className="p-2 mt-4 bg-xuntaGris-300 rounded-md">
                         <legend className="text-xs md:text-base lg:text-xl xl:text-2xl space-x-2">
                             <span>Titularidade e concerto</span>
@@ -223,7 +312,7 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                         <div>
                             <div className="flex flex-col mb-5">
                                 <label htmlFor="titularidad">Titularidade</label>
-                                <select className="rounded-md w-4/5 md:w-3/6" id="titularidad" name="titularidad" onChange={handleSelectTitularidad} value={titularidadName}>
+                                <select className="rounded-md w-1/2 md:w-3/6" id="titularidad" name="titularidad" onChange={handleSelectTitularidad} value={titularidadName}>
                                     <option value="">--Todas--</option>
                                     <option value="Privada">Privada</option>
                                     <option value="Pública">Pública</option>
@@ -235,7 +324,7 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                 </fieldset>
                 <div className="flex justify-center mt-3 space-x-3">
                     <PrimaryButton color="xuntaAzul">
-                        Buscar
+                        Enviar
                     </PrimaryButton>
                     <SecondaryButton color="xuntaAzul" handleOnClick={clearForm}>
                         Limpiar
