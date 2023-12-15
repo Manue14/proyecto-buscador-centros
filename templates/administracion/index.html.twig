@@ -6,7 +6,8 @@
     {{ parent() }}
     <script>
         prop_object.method = "POST";
-        prop_object.action = "{{path('app_buscador_list')}}";
+        prop_object.action = "{{path('app_administracion_edit')}}";
+        prop_object.actionDelete = "{{path('app_administracion_delete')}}";
         let arrayConcellos = [[], [], [], []];
         let contador = 0;
         {% for groupedConcellos in concellos %}
@@ -46,6 +47,12 @@
             prop_object.centros = arrayCentros;
         {% endif %}
     </script>
+    {% for message in app.flashes('notice') %}
+        <script>
+            prop_object.message = "{{message}}";
+            prop_object.type = "normal";
+        </script>
+    {% endfor %}
     {% if message|default(null) %}
         <script>
             prop_object.message = "{{message}}";

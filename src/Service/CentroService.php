@@ -13,6 +13,10 @@ class CentroService {
         return $centros;
     }
 
+    public function findById($centro_id): ?CentroEducativo {
+        return $this->centroRepository->find($centro_id);
+    }
+
     public function queryBuilder($nombre, $tipo_de_centro, $provincia_id, $concello_id, $titularidad_nombre, $titularidad_dependencia) {
         return $this->centroRepository->filterBy($nombre, $tipo_de_centro, $provincia_id, $concello_id, $titularidad_nombre, $titularidad_dependencia);
     }

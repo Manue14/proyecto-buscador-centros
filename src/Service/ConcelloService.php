@@ -17,4 +17,8 @@ class ConcelloService {
         $concellos = $this->concelloRepository->findByProvincia($provincia_id);
         return $concellos;
     }
+
+    public function findById($concello_id): ?Concello {
+        return $this->concelloRepository->find($concello_id);
+    }
 }

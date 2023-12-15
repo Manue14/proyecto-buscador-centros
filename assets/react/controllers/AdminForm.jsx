@@ -5,7 +5,7 @@ import SecondaryButton from './SecondatyButton';
 import Tooltip from './Tooltip';
 import MyModal from './Modal';
 
-export default function AdminForm({ method, action, centros, concellos, tipos_centro }) {
+export default function AdminForm({ method, action, centros, concellos, tipos_centro, action_delete }) {
     const [selectedCentro, setCentro] = useState({tipo_de_centro: ""});
     const [selectedProvincia, setProvincia] = useState(null);
     const [selectedTitularidad, setTitularidad] = useState(null);
@@ -199,16 +199,21 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
         } else {
             setIsEditing(false);
         }
-        let searchForm = document.getElementById("searchForm");
+        let searchForm = document.getElementById("adminForm");
         searchForm.reset();
         setCentro({tipo_de_centro: ""});
         setProvincia(null);
         setTitularidad(null);
     }
 
+    function deleteCentro() {
+        let form = document.getElementById("adminForm");
+        form.action = action_delete;
+    }
+
     function clearForm(e) {
         e.preventDefault();
-        let searchForm = document.getElementById("searchForm");
+        let searchForm = document.getElementById("adminForm");
         searchForm.reset();
         setCentro({tipo_de_centro: ""});
         setProvincia(null);
@@ -222,10 +227,10 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
     }
 
     return (
-        <form id="searchForm" className="lg:text-xl xl:text-2xl w-full" method={method} action={action}>
+        <form id="adminForm" className="lg:text-xl xl:text-2xl w-full" method={method} action={action}>
             <fieldset className="w-4/5 m-auto p-4 bg-xuntaGris-50 rounded-md">
-                <legend>Filtros para a busca</legend>
-                <p><i>Indique polo menos un filtro e prema o botón Buscar</i></p>
+                <legend>Campos propios de cada centro</legend>
+                <p><i>Asegúrese de cubrir todos os campos</i></p>
                 <fieldset className="p-4 bg-xuntaGris-100 rounded-md">
                     <legend>Centro</legend>
                     <div className='lg:flex lg:justify-around lg:space-x-6 mb-5'>
@@ -279,8 +284,16 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                     </div>
                     <div className="flex flex-col mb-5">
                         <label htmlFor="postal">Código postal</label>
-                        <input className="rounded-md w-1/2 md:w-3/5" id="postal" name="postal" defaultValue={selectedCentro !== null ?
+                        <input className="rounded-md w-1/2 md:w-3/5" id="postal" name="postal" type="number" defaultValue={selectedCentro !== null ?
                                 selectedCentro.cod_postal
+                            :
+                                ""}>
+                        </input>
+                    </div>
+                    <div className="flex flex-col mb-5">
+                        <label htmlFor="postal">Teléfono</label>
+                        <input className="rounded-md w-1/2 md:w-3/5" id="tlf" name="tlf" type="tel" defaultValue={selectedCentro !== null ?
+                                selectedCentro.tlf
                             :
                                 ""}>
                         </input>
@@ -288,7 +301,7 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                     <div className='md:flex md:justify-around md:space-x-1'>
                         <div className="md:flex md:flex-col mb-5">
                             <label htmlFor="coordenadaX">Coordenada X</label>
-                            <input className="rounded-md md:w-full" id="coordenadaX" name="coordenadaX" type="number" defaultValue={selectedCentro !== null ?
+                            <input className="rounded-md md:w-full" id="coordenadaX" name="coordenadaX" type="number" step="0.001" defaultValue={selectedCentro !== null ?
                                     selectedCentro.coordenadaX
                                 :
                                     ""}>
@@ -296,7 +309,7 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                         </div>
                         <div className="md:flex md:flex-col mb-5">
                             <label htmlFor="coordenadaX">Coordenada Y</label>
-                            <input className="rounded-md md:w-full" id="coordenadaY" name="coordenadaY" type="number" defaultValue={selectedCentro !== null ?
+                            <input className="rounded-md md:w-full" id="coordenadaY" name="coordenadaY" type="number" step="0.001" defaultValue={selectedCentro !== null ?
                                     selectedCentro.coordenadaY
                                 :
                                     ""}>
@@ -326,12 +339,23 @@ export default function AdminForm({ method, action, centros, concellos, tipos_ce
                     <PrimaryButton color="xuntaAzul">
                         Enviar
                     </PrimaryButton>
+                    {selectedCentro.id !== undefined ?
+                        <PrimaryButton color="xuntaRojo" handleOnClick={deleteCentro}>
+                            Eliminar
+                        </PrimaryButton>
+                    :
+                        <></>
+                    }
                     <SecondaryButton color="xuntaAzul" handleOnClick={clearForm}>
                         Limpiar
                     </SecondaryButton>
                 </div> 
             </fieldset>
             <MyModal></MyModal>
+            <input className='hidden' id="id" name="id" readOnly value={selectedCentro.id !== undefined ?
+                selectedCentro.id
+                :
+                "1"}></input>
         </form>
     )
 }

@@ -15,7 +15,7 @@ export default function AdminFormApp() {
             </div>
             <div className="m-auto h-fit mt-10">
                 <div className="lg:w-full">
-                    <AdminForm method={prop_object.method} action={prop_object.action} centros={prop_object.centros} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro}/>
+                    <AdminForm method={prop_object.method} action={prop_object.action} centros={prop_object.centros} concellos={prop_object.concellos} tipos_centro={prop_object.tiposCentro} action_delete={prop_object.actionDelete}/>
                 </div>
             </div>
             <MyFooter />
